@@ -1,0 +1,154 @@
+{
+  "entities": {
+    "Offboarding": {
+      "title": "Offboarding Record",
+      "description": "Represents an employee IT offboarding record including Entra ID, Intune, email, SaaS, and physical exit checklist items.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the offboarding record",
+          "maxLength": 128
+        },
+        "employeeName": {
+          "type": "string",
+          "description": "Full name of the offboarding employee",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "employeeEmail": {
+          "type": "string",
+          "description": "Company email address of the employee",
+          "minLength": 5,
+          "maxLength": 120
+        },
+        "department": {
+          "type": "string",
+          "description": "Department or business unit",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "lastWorkingDay": {
+          "type": "string",
+          "description": "ISO date string of the employee's last working day (YYYY-MM-DD)",
+          "minLength": 10,
+          "maxLength": 10
+        },
+        "manager": {
+          "type": "string",
+          "description": "Name or email of the employee's manager",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "assignedItPerson": {
+          "type": "string",
+          "description": "Name or email of the IT admin assigned to execute the offboarding",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "status": {
+          "type": "string",
+          "description": "Current overall status of the offboarding workflow",
+          "enum": ["not_started", "in_progress", "completed"]
+        },
+        "notes": {
+          "type": "string",
+          "description": "General notes or remarks for this offboarding record",
+          "maxLength": 2000
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the record was initiated"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the record was last modified"
+        },
+        "createdBy": {
+          "type": "string",
+          "description": "Email or UID of the IT admin who created the record",
+          "maxLength": 120
+        }
+      },
+      "required": [
+        "employeeName",
+        "employeeEmail",
+        "department",
+        "lastWorkingDay",
+        "manager",
+        "assignedItPerson",
+        "status"
+      ]
+    },
+    "ChecklistTemplate": {
+      "title": "Checklist Template",
+      "description": "Default checklist template sections and items copied into new offboarding records.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Template document identifier (e.g., 'default')",
+          "maxLength": 64
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the checklist template",
+          "maxLength": 120
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp when the template was last modified"
+        },
+        "updatedBy": {
+          "type": "string",
+          "description": "Email or UID of the IT admin who updated the template",
+          "maxLength": 120
+        }
+      },
+      "required": ["name"]
+    },
+    "AdminUser": {
+      "title": "Admin User",
+      "description": "Authorized IT admin record stored in admins collection for RBAC validation.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user identifier",
+          "maxLength": 128
+        },
+        "email": {
+          "type": "string",
+          "description": "Admin email address",
+          "maxLength": 120
+        },
+        "role": {
+          "type": "string",
+          "description": "User role",
+          "enum": ["admin", "superadmin"]
+        }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/offboardings/{offboardingId}": {
+      "schema": {
+        "$ref": "Offboarding"
+      },
+      "description": "Collection of employee offboarding records and their complete snapshot checklist."
+    },
+    "/templates/{templateId}": {
+      "schema": {
+        "$ref": "ChecklistTemplate"
+      },
+      "description": "Collection storing the master checklist templates."
+    },
+    "/admins/{adminUid}": {
+      "schema": {
+        "$ref": "AdminUser"
+      },
+      "description": "Collection storing authorized IT admins for role-based access control."
+    }
+  }
+}

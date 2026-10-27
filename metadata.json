@@ -1,0 +1,6 @@
+{
+  "name": "IT Admin Employee Offboarding Tracker",
+  "description": "Comprehensive IT offboarding management for Microsoft Entra ID (Azure AD), Intune managed devices, email retention, SaaS security, and HR compliance with real-time Firestore sync.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
